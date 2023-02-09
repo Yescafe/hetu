@@ -1,3 +1,40 @@
+### 环境搭建过程记录
+
+1. 安装 mysql-installer-community-5.7.40.0.msi，默认 Developer Default，密码 12345678，不需要建额外的用户，接着一路默认，Connect to Server 测试密码。
+2. 安装 node-v15.14.0-x64.msi，全部默认。
+3. 安装 yarn-1.22.19.msi，全部默认。
+4. MySQL 里建个数据库，这里叫 hetu_dev，然后执行 server/open_hetu.sql。
+5. 邮箱是我提前就弄好的，但是又没弄好，不过无所谓。
+6. 项目根目录新建一个 system_config.ini：
+   ```ini
+   [server]
+   port = 9536
+
+   [mysql]
+   host = 127.0.0.1
+   port = 3306
+   user = root
+   password = 12345678
+   database = hetu_dev
+
+   [email]
+   host = smtp.163.com
+   port = 364
+   user = xxxxxxxxx@163.com
+   pass = xxxxx
+
+   [client]
+   cdn_host = 127.0.0.1
+   ```
+7. 用 npm 安装 yarn 跳过，因为我自己装了。
+8. 开三个 powershell：
+   1. 第一个进 /plugin，执行 `yarn`，我这显示有 1501 个依赖要 fetch，最后用了 182s。然后打包 esm，用 `yarn run build:umd`，花了 74s。完成后运行组件库 `yarn run server:dist`，访问 <http://127.0.0.1:8080/manifest.json> 看看端口能否成功返回这个 json。
+   2. 第二个进 /client，执行 `yarn`，有 1643 个要 fetch，最后用了 100s。然后先不启动。
+   3. 第三个进 /server，执行 `yarn`，有 629 个要 fetch，用了 29s。
+9. 按顺序启动 client 和 server。先在 /client 里 `yarn start`，再在 /server 里 `yarn dev`。
+10. 然后要等待 client 启动完成，会显示 `Files successfully emitted`。
+
+
 <p align="center">
 <img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a9202d4d9e234092881b110c5bfeee7c~tplv-k3u1fbpfcp-zoom-1.image" width="60" height="60"/>
 <h1>河图</h1>
